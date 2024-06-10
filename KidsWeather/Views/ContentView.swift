@@ -44,7 +44,8 @@ struct ContentView: View {
                             .fontWeight(.medium)
                         Cloudy()
                             .aspectRatio(1.0, contentMode: .fit)
-                            .padding()
+                            .padding(20)
+                            
 
                     }
                     .padding()
