@@ -9,9 +9,17 @@ import SwiftUI
 
 @main
 struct KidsWeatherApp: App {
+    
+    @State private var locationManager = LocationManager()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if locationManager.isAuthorized {
+                ForecastView()
+            } else {
+                LocationDeniedView()
+            }
         }
+        .environment(locationManager)
     }
 }
