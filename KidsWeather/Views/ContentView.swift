@@ -26,12 +26,12 @@ struct ForecastView: View {
 
     var body: some View {
         ZStack {
-            if ((currentWeather?.isDaylight) != nil) {
-                SunnyBackground()
-            } else {
-                ClearNight()
-            }
-            ClearNight()
+            if let currentWeather = currentWeather {
+                            BackgroundView(condition: currentWeather.condition)
+                        } else {
+                            DefaultBackground() 
+                        }
+                        
             if let selectedCity {
                 
                 if isLoading {
@@ -41,16 +41,14 @@ struct ForecastView: View {
                     if let currentWeather {
                         
                         VStack {
-                            
                             ZStack {
-                               
                                 VStack {
                                     Group {
                                         Text(selectedCity.name)
                                             .font(.title)
                                         HStack {
-                                            Text(Date.now.formatted(date: .abbreviated, time: .omitted))
-                                            Text(Date.now.formatted(date: .omitted, time: .shortened))
+                                            Text(currentWeather.date.formatted(date: .abbreviated, time: .omitted))
+                                            Text(currentWeather.date.formatted(date: .omitted, time: .shortened))
                                         }
                                     }
                                     .foregroundColor(.white)
