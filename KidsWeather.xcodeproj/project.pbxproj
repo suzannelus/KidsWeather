@@ -20,6 +20,7 @@
 		50AEBF3B2C1732C8006A683B /* Attribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50AEBF3A2C1732C8006A683B /* Attribution.swift */; };
 		50AEBF3D2C173C6B006A683B /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50AEBF3C2C173C6B006A683B /* City.swift */; };
 		50AEBF402C173F6D006A683B /* LocationDeniedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50AEBF3F2C173F6D006A683B /* LocationDeniedView.swift */; };
+		50C8622A2C17A14800582CC7 /* Backgrounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C862292C17A14800582CC7 /* Backgrounds.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		50AEBF3A2C1732C8006A683B /* Attribution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attribution.swift; sourceTree = "<group>"; };
 		50AEBF3C2C173C6B006A683B /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		50AEBF3F2C173F6D006A683B /* LocationDeniedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationDeniedView.swift; path = "KidsWeather/Managers/Other Views/LocationDeniedView.swift"; sourceTree = SOURCE_ROOT; };
+		50C862292C17A14800582CC7 /* Backgrounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backgrounds.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 		500F85662C14D17C00C1F14A = {
 			isa = PBXGroup;
 			children = (
+				50C862292C17A14800582CC7 /* Backgrounds.swift */,
 				50AEBF3A2C1732C8006A683B /* Attribution.swift */,
 				500F85712C14D17C00C1F14A /* KidsWeather */,
 				500F85832C14D17F00C1F14A /* KidsWeatherTests */,
@@ -305,6 +308,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				50AEBF402C173F6D006A683B /* LocationDeniedView.swift in Sources */,
+				50C8622A2C17A14800582CC7 /* Backgrounds.swift in Sources */,
 				507213C82C14E53400BCF29A /* LocationManager.swift in Sources */,
 				500F859E2C14D5EB00C1F14A /* WeatherManager.swift in Sources */,
 				500F85752C14D17C00C1F14A /* ContentView.swift in Sources */,

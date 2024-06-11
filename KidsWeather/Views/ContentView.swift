@@ -15,7 +15,7 @@ import WeatherKit
 struct ForecastView: View {
     
     @Environment(LocationManager.self) var locationManager
-    @State private var selectedCity: City?
+    @State private var selectedCity: City? = City(name: "Amsterdam", latitude: 52.373709, longitude: 44.874793)
     
     let weatherManager = WeatherManager.shared
     
@@ -23,14 +23,16 @@ struct ForecastView: View {
     @State private var isLoading = false
     
     
-    
-    
-    
-    
+
     var body: some View {
         ZStack {
+            if ((currentWeather?.isDaylight) != nil) {
+                SunnyBackground()
+            } else {
+                ClearNight()
+            }
+            ClearNight()
             if let selectedCity {
-                
                 
                 if isLoading {
                     ProgressView()
@@ -38,59 +40,78 @@ struct ForecastView: View {
                 } else {
                     if let currentWeather {
                         
-                        Color.blue
-                            .ignoresSafeArea()
                         VStack {
+                            
                             ZStack {
-                                
-                                RoundedRectangle(cornerRadius: 60.0)
-                                    .foregroundColor(.white)
-                                    .opacity(0.3)
-                                    .aspectRatio(16/9, contentMode: .fit)
+                               
                                 VStack {
-                                    Text(selectedCity.name)
-                                        .font(.title)
-                                    Text(Date.now.formatted(date: .abbreviated, time: .omitted))
-                                    Text(Date.now.formatted(date: .omitted, time: .shortened))
-                                    HStack {
-                                        VStack {
-                                            
-                                            
-                                            Text("\(currentWeather.temperature.value.formatted(.number.precision(.fractionLength(0))))°")
-                                            
-                                            Image(systemName: currentWeather.symbolName)
-                                                .renderingMode(.original)
-                                                .symbolVariant(.fill)
-                                            Text(currentWeather.condition.description)
-                                                .font(.subheadline)
+                                    Group {
+                                        Text(selectedCity.name)
+                                            .font(.title)
+                                        HStack {
+                                            Text(Date.now.formatted(date: .abbreviated, time: .omitted))
+                                            Text(Date.now.formatted(date: .omitted, time: .shortened))
                                         }
-                                        .font(.custom("Avenir", size: 180, relativeTo: .largeTitle))
+                                    }
+                                    .foregroundColor(.white)
+                                    HStack {
+                                   
+                                            Text("\(currentWeather.temperature.value.formatted(.number.precision(.fractionLength(0))))°")
+                                                   .font(.system(size: 500))
+                                                   .minimumScaleFactor(0.01)
                                         .fontDesign(.rounded)
                                         .fontWeight(.medium)
+                                        .padding()
+                                        .foregroundColor(.white)
+
+                                        VStack {
+                                            Image("\(currentWeather.condition)")
+                                                .resizable()
+                                                .scaledToFit()
+                                            Text(currentWeather.condition.description)
+                                               
+                                        }
                                         
-                                        
-                                        
-                                        Cloudy()
-                                            .aspectRatio(1.0, contentMode: .fit)
-                                            .padding(20)
+                                    }
+                                   
+                                }
+                                
+                               
+                            }
+                            ScrollView {
+                                HStack {
+                                    HStack {
+                                        Capsule()
+                                        Capsule()
+                                        Capsule()
                                         
                                         
                                     }
-                                    .padding()
+                                    Divider()
+                                    HStack {
+                                        Capsule()
+                                        Capsule()
+                                        Capsule()
+                                        
+                                        
+                                    }
                                 }
                             }
-                            .padding(60)
+                            
                             AttributionView()
+                            
                         }
                     }
                 }
+            } else {
+                Text("Hi")
             }
         }.task(id: locationManager.currentLocation) {
             if let currentLocation = locationManager.currentLocation, selectedCity == nil {
                 selectedCity = currentLocation
             }
-            
         }
+        
         .task(id: selectedCity) {
             if let selectedCity {
                 await fetchWeather(for: selectedCity)
@@ -101,17 +122,15 @@ struct ForecastView: View {
     func fetchWeather(for city: City) async {
         isLoading = true
         Task.detached { @MainActor in
-            currentWeather = await weatherManager.currentWeather(for:city.cLlocation)
-            
+            currentWeather = await weatherManager.currentWeather(for: city.cLlocation)
         }
         isLoading = false
     }
-    
 }
-
-
 
 #Preview {
     ForecastView()
         .environment(LocationManager())
 }
+
+

@@ -7,12 +7,36 @@
 
 import SwiftUI
 
-struct Backgrounds: View {
+struct SunnyBackground: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        RadialGradient(colors: [.teal, .mint, .white], center: .topLeading, startRadius: 400, endRadius: 70)
+            .ignoresSafeArea()
+    }
+}
+
+struct ClearNight: View {
+    var body: some View {
+      
+       
+        LinearGradient(colors: [Color.darkGrey, Color.darkBlue], startPoint: .top, endPoint: .bottom)
+            .ignoresSafeArea()
+        
     }
 }
 
 #Preview {
-    Backgrounds()
+    SunnyBackground()
+}
+
+#Preview {
+    ClearNight()
+}
+
+
+extension Color {
+    static let darkGrey = Color(red: 31/255, green: 40/255, blue: 54/255, opacity: 1.0)
+}
+
+extension Color {
+    static let darkBlue = Color(red: 31/255, green: 40/255, blue: 90/255, opacity: 1.0)
 }

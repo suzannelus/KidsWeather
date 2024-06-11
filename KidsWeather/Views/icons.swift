@@ -16,15 +16,21 @@ struct Cloudy: View {
             //    .scaledToFit()
             CloudShape()
                 .padding(20)
-                .foregroundColor(.gray)
                 .shadow(radius: 10)
+                .foregroundStyle(LinearGradient(colors: [Color.white, Color.white, Color.gray.opacity(0.7)], startPoint: .top, endPoint: .bottom))
+                    .font(.largeTitle)
+                    .fontWeight(.medium)
         }
     }
 }
 
 #Preview {
-    Cloudy()
-    
+    ZStack {
+        
+        Color.blue
+        Cloudy()
+        
+    }
 }
 
 
