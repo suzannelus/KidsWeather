@@ -21,49 +21,59 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
     
     func startLocationServices() {
-        if manager.authorizationStatus == .authorizedAlways || manager.authorizationStatus == .authorizedWhenInUse {
-            manager.startUpdatingLocation()
-            isAuthorized = true
-        } else {
-            isAuthorized = false
-            manager.requestWhenInUseAuthorization()
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        userLocation = locations.last
-        if let userLocation {
-            Task {
-                let name = await getLocationName(for: userLocation)
-                currentLocation = City(name: name, latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
+            switch manager.authorizationStatus {
+            case .authorizedAlways, .authorizedWhenInUse:
+                // Location services are already authorized
+                isAuthorized = true
+                manager.startUpdatingLocation()
+            case .notDetermined:
+                // Request authorization to use location services when the app is in use
+                manager.requestWhenInUseAuthorization()
+            case .denied, .restricted:
+                // Location services are not authorized
+                isAuthorized = false
+            default:
+                // Fallback case for other states
+                isAuthorized = false
             }
         }
-        
-    }
     
-    func getLocationName(for location: CLLocation) async -> String {
-        let name = try? await CLGeocoder().reverseGeocodeLocation(location).first?.locality
-        return name ?? ""
-    }
-    
-    func locationManager(_ manager: CLLocationManager) {
-        switch manager.authorizationStatus {
-        case .authorizedAlways, .authorizedWhenInUse:
-            isAuthorized = true
-            manager.requestLocation()
-        case .notDetermined:
-            isAuthorized = false
-            manager.requestWhenInUseAuthorization()
-        case .denied:
-            isAuthorized = false
-        default:
-            startLocationServices()
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+            if status == .authorizedAlways || status == .authorizedWhenInUse {
+                // Start updating location when authorized
+                isAuthorized = true
+                manager.startUpdatingLocation()
+            } else if status == .notDetermined {
+                // Request authorization if not determined
+                manager.requestWhenInUseAuthorization()
+            } else {
+                // Handle denied or restricted cases
+                isAuthorized = false
+            }
         }
+
+        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+            userLocation = locations.last
+            if let userLocation {
+                Task {
+                    let name = await getLocationName(for: userLocation)
+                    currentLocation = City(name: name, latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
+                }
+            }
+        }
+
+        func getLocationName(for location: CLLocation) async -> String {
+            let name = try? await CLGeocoder().reverseGeocodeLocation(location).first?.locality
+            return name ?? ""
+        }
+    
+    func getTimezone(for location: CLLocation) async -> TimeZone {
+        let timezone = try? await CLGeocoder().reverseGeocodeLocation(location).first?.timeZone
+        return timezone ?? .current
         
     }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
-        print(error.localizedDescription)
+
+        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+            print(error.localizedDescription)
+        }
     }
-    
-}

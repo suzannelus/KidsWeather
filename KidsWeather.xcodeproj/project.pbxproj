@@ -21,6 +21,7 @@
 		50AEBF3D2C173C6B006A683B /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50AEBF3C2C173C6B006A683B /* City.swift */; };
 		50AEBF402C173F6D006A683B /* LocationDeniedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50AEBF3F2C173F6D006A683B /* LocationDeniedView.swift */; };
 		50C8622A2C17A14800582CC7 /* Backgrounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C862292C17A14800582CC7 /* Backgrounds.swift */; };
+		50C8622D2C19CBF100582CC7 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C8622C2C19CBF100582CC7 /* Date+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		50AEBF3C2C173C6B006A683B /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		50AEBF3F2C173F6D006A683B /* LocationDeniedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationDeniedView.swift; path = "KidsWeather/Managers/Other Views/LocationDeniedView.swift"; sourceTree = SOURCE_ROOT; };
 		50C862292C17A14800582CC7 /* Backgrounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backgrounds.swift; sourceTree = "<group>"; };
+		50C8622C2C19CBF100582CC7 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 		500F85712C14D17C00C1F14A /* KidsWeather */ = {
 			isa = PBXGroup;
 			children = (
+				50C8622B2C19CBD000582CC7 /* New Group */,
 				50AEBF3E2C173F4B006A683B /* Other views */,
 				507213CA2C14E5CE00BCF29A /* Views */,
 				507213C92C14E5BF00BCF29A /* Managers */,
@@ -175,6 +178,14 @@
 			);
 			name = "Other views";
 			path = "Managers/Other views";
+			sourceTree = "<group>";
+		};
+		50C8622B2C19CBD000582CC7 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				50C8622C2C19CBF100582CC7 /* Date+Extension.swift */,
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -312,6 +323,7 @@
 				507213C82C14E53400BCF29A /* LocationManager.swift in Sources */,
 				500F859E2C14D5EB00C1F14A /* WeatherManager.swift in Sources */,
 				500F85752C14D17C00C1F14A /* ContentView.swift in Sources */,
+				50C8622D2C19CBF100582CC7 /* Date+Extension.swift in Sources */,
 				50AEBF3B2C1732C8006A683B /* Attribution.swift in Sources */,
 				507213CC2C14E74A00BCF29A /* icons.swift in Sources */,
 				500F85732C14D17C00C1F14A /* KidsWeatherApp.swift in Sources */,
@@ -481,6 +493,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = KidsWeather/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to provide accurate weather information";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to provide accurate weather information";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -492,7 +505,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.1;
@@ -522,6 +535,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = KidsWeather/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to provide accurate weather information";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to provide accurate weather information";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -533,7 +547,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.1;

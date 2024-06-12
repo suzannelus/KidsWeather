@@ -10,28 +10,33 @@
 import SwiftUI
 import CoreLocation
 import WeatherKit
+import CoreMotion
 
 
 struct ForecastView: View {
     
+    let motionManager = CMMotionManager()
+    let queue = OperationQueue()
+    
+    
+    
     @Environment(LocationManager.self) var locationManager
-    @State private var selectedCity: City? = City(name: "Amsterdam", latitude: 52.373709, longitude: 44.874793)
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var selectedCity: City?
+    @State private var timezone: TimeZone = .current
     
     let weatherManager = WeatherManager.shared
     
     @State private var currentWeather: CurrentWeather?
     @State private var isLoading = false
     
+    @State private var pitch = 0.0
+    @State private var yaw = 0.0
+    @State private var roll = 0.0
     
-
+    
     var body: some View {
         ZStack {
-            if let currentWeather = currentWeather {
-                            BackgroundView(condition: currentWeather.condition)
-                        } else {
-                            DefaultBackground() 
-                        }
-                        
             if let selectedCity {
                 
                 if isLoading {
@@ -46,57 +51,55 @@ struct ForecastView: View {
                                     Group {
                                         Text(selectedCity.name)
                                             .font(.title)
+                              
                                         HStack {
-                                            Text(currentWeather.date.formatted(date: .abbreviated, time: .omitted))
-                                            Text(currentWeather.date.formatted(date: .omitted, time: .shortened))
-                                        }
+                                            Text(currentWeather.date.localDate(for: timezone))
+                                                
+                                            Text(currentWeather.date.localTime(for: timezone))                                        }
                                     }
                                     .foregroundColor(.white)
+                                    .onAppear() {
+                                        rollWeather()
+                                    }
+                                    .rotation3DEffect(
+                                        Angle(radians: roll),
+                                        axis: (x: 1.0, y: 0.0, z: 0.0)
+                                    )
+                                    .rotation3DEffect(
+                                        Angle(radians: pitch),
+                                        axis: (x: 0.0, y: 1.0, z: 0.0)
+                                    )
+                                    .rotation3DEffect(
+                                        Angle(radians: yaw),
+                                        axis: (x: 0.0, y: 0.0, z: 1.0)
+                                    )
                                     HStack {
-                                   
-                                            Text("\(currentWeather.temperature.value.formatted(.number.precision(.fractionLength(0))))°")
-                                                   .font(.system(size: 500))
-                                                   .minimumScaleFactor(0.01)
-                                        .fontDesign(.rounded)
-                                        .fontWeight(.medium)
-                                        .padding()
-                                        .foregroundColor(.white)
-
+                                        Text("\(currentWeather.temperature.value.formatted(.number.precision(.fractionLength(0))))°")
+                                            .font(.system(size: 500))
+                                            .minimumScaleFactor(0.01)
+                                            .fontDesign(.rounded)
+                                            .fontWeight(.medium)
+                                            .padding()
+                                            .foregroundColor(.white)
+                                        
                                         VStack {
                                             Image("\(currentWeather.condition)")
                                                 .resizable()
                                                 .scaledToFit()
                                             Text(currentWeather.condition.description)
-                                               
+                                            
                                         }
-                                        
                                     }
-                                   
+                                    .frame(maxWidth: 500)
+                                    Spacer()
+
                                 }
                                 
-                               
-                            }
-                            ScrollView {
-                                HStack {
-                                    HStack {
-                                        Capsule()
-                                        Capsule()
-                                        Capsule()
-                                        
-                                        
-                                    }
-                                    Divider()
-                                    HStack {
-                                        Capsule()
-                                        Capsule()
-                                        Capsule()
-                                        
-                                        
-                                    }
-                                }
+                                
                             }
                             
                             AttributionView()
+                                .tint(.white)
                             
                         }
                     }
@@ -104,7 +107,29 @@ struct ForecastView: View {
             } else {
                 Text("Hi")
             }
-        }.task(id: locationManager.currentLocation) {
+        }
+        .frame(maxWidth: .infinity)
+        .background {
+            if let currentWeather = currentWeather {
+                BackgroundView(condition: currentWeather.condition)
+                    .ignoresSafeArea()
+            } else {
+                DefaultBackground()
+                    .ignoresSafeArea()
+            }
+        }
+        .preferredColorScheme(.dark)
+        .onChange(of: scenePhase) {
+            if scenePhase == .active {
+                selectedCity = locationManager.currentLocation
+                if let selectedCity {
+                    Task {
+                        await fetchWeather(for: selectedCity)
+                    }
+                }
+            }
+        }
+        .task(id: locationManager.currentLocation) {
             if let currentLocation = locationManager.currentLocation, selectedCity == nil {
                 selectedCity = currentLocation
             }
@@ -121,14 +146,34 @@ struct ForecastView: View {
         isLoading = true
         Task.detached { @MainActor in
             currentWeather = await weatherManager.currentWeather(for: city.cLlocation)
+            timezone = await locationManager.getTimezone(for: city.cLlocation)
         }
         isLoading = false
     }
+    
+    func rollWeather() {
+        
+        self.motionManager.startDeviceMotionUpdates(to: self.queue) { (data: CMDeviceMotion?, error: Error?) in
+            guard let data = data else {
+                print("Error: \(error!)")
+                return
+            }
+            let attitude: CMAttitude = data.attitude
+            
+            DispatchQueue.main.async {
+                self.pitch = attitude.pitch
+                self.yaw = attitude.yaw
+                self.roll = attitude.roll
+                //print(roll)
+                
+            }
+        }
+    }
 }
-
-#Preview {
-    ForecastView()
-        .environment(LocationManager())
-}
-
-
+    
+    #Preview {
+        ForecastView()
+            .environment(LocationManager())
+    }
+    
+    
