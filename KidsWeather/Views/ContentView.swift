@@ -15,8 +15,6 @@ import CoreMotion
 
 struct ForecastView: View {
     
-    let motionManager = CMMotionManager()
-    let queue = OperationQueue()
     
     
     
@@ -58,21 +56,7 @@ struct ForecastView: View {
                                             Text(currentWeather.date.localTime(for: timezone))                                        }
                                     }
                                     .foregroundColor(.white)
-                                    .onAppear() {
-                                        rollWeather()
-                                    }
-                                    .rotation3DEffect(
-                                        Angle(radians: roll),
-                                        axis: (x: 1.0, y: 0.0, z: 0.0)
-                                    )
-                                    .rotation3DEffect(
-                                        Angle(radians: pitch),
-                                        axis: (x: 0.0, y: 1.0, z: 0.0)
-                                    )
-                                    .rotation3DEffect(
-                                        Angle(radians: yaw),
-                                        axis: (x: 0.0, y: 0.0, z: 1.0)
-                                    )
+                                    
                                     HStack {
                                         Text("\(currentWeather.temperature.value.formatted(.number.precision(.fractionLength(0))))°")
                                             .font(.system(size: 500))
@@ -91,6 +75,7 @@ struct ForecastView: View {
                                         }
                                     }
                                     .frame(maxWidth: 500)
+                                    
                                     Spacer()
 
                                 }
@@ -151,24 +136,6 @@ struct ForecastView: View {
         isLoading = false
     }
     
-    func rollWeather() {
-        
-        self.motionManager.startDeviceMotionUpdates(to: self.queue) { (data: CMDeviceMotion?, error: Error?) in
-            guard let data = data else {
-                print("Error: \(error!)")
-                return
-            }
-            let attitude: CMAttitude = data.attitude
-            
-            DispatchQueue.main.async {
-                self.pitch = attitude.pitch
-                self.yaw = attitude.yaw
-                self.roll = attitude.roll
-                //print(roll)
-                
-            }
-        }
-    }
 }
     
     #Preview {
