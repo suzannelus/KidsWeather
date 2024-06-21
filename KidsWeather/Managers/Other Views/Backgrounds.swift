@@ -180,7 +180,7 @@ struct NightClearBackground: View {
 
 struct NightCloudyBackground: View {
     var body: some View {
-        LinearGradient(colors: [.darkGray, .black], startPoint: .top, endPoint: .bottom)
+        LinearGradient(colors: [.darkBlue, Color.lightBlue], startPoint: .top, endPoint: .bottom)
             .ignoresSafeArea()
     }
 }
@@ -242,8 +242,8 @@ struct NightSunShowersBackground: View {
 }
 extension Color {
     static let darkGray = Color(red: 31/255, green: 40/255, blue: 54/255, opacity: 1.0)
+    static let darkBlue = Color(red: 31/255, green: 40/255, blue: 90/255, opacity: 1.0)
+    static let lightBlue = Color(red: 203/255, green: 233/255, blue: 253/255, opacity: 1.0)
+
 }
 
-extension Color {
-    static let darkBlue = Color(red: 31/255, green: 40/255, blue: 90/255, opacity: 1.0)
-}

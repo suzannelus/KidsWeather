@@ -26,4 +26,15 @@ extension Date {
         
         return dateFormatter.string(from: self)
     }
+    
+    func formattedHour(for timezone: TimeZone) -> String {
+            var calendar = Calendar.current
+            calendar.timeZone = timezone
+            let hour = calendar.component(.hour, from: self)
+            let hour12 = hour % 12
+            return hour12 == 0 ? "12" : "\(hour12)"
+        }
+    
 }
+
+   
